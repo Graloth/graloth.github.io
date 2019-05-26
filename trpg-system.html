@@ -16,6 +16,7 @@
 <li><a href="#trpg-service-system">TRPG Service System</a>
 <ul>
 <li><a href="#api-service">API Service</a></li>
+<li><a href="#search--information-repository">Search / Information Repository</a></li>
 </ul>
 </li>
 </ul>
@@ -30,7 +31,7 @@
 <h2 id="api-service"><abbr title="Application Programming Interface">API</abbr> Service</h2>
 <p>A restful <abbr title="Application Programming Interface">API</abbr> services that provides a simple way for developers and other apps to integrate information from the <abbr title="Tabletop Role Playing Game">TRPG</abbr> systems. This <abbr title="Application Programming Interface">API</abbr> service provides the “single source of truth” for all information used within the <abbr title="Tabletop Role Playing Game">TRPG</abbr> Service System.</p>
 <p>The service should expose various connection endpoints that can be used to retrieve specific information, along with accepting additional attributes for filtering and/or sorting the returned result.</p>
-<h3 id="examples">Examples:</h3>
+<h3 id="examples">Examples</h3>
 <p>These examples are only mockups, any final product will likely be different and more flexible. They are only intended to provide a better understanding of what the <abbr title="Application Programming Interface">API</abbr> Service actually provide.</p>
 <p><strong>Attributes</strong><br>
 This example lists all attributes, but not enriched, meaning it uses placeholders for information that belongs to another endpoint.<br>
@@ -134,17 +135,47 @@ This shows a request for information specific to the Anathema mystical power, bu
 <p>This would require an account system that has a list of all the books/materials the user has purchased, granting them access to each individual information based on said list.</p>
 <p>However, for a lot of players they might not want to purchase all the books if they are just players and their GM usually has all the required books. For that reason, anonymous users should still have access to all information, but in a summarised version that is usable, but doesn’t provide the usual lore, flavor and similar texts.</p>
 <p>A quick mock-up of access roles would be:</p>
-<ul>
-<li><strong>Anonymous:</strong> Access to summarized content in minimal form so they can still play the system without all books. This access is what a user has to all information they haven’t purchased.</li>
-<li><strong>Owner</strong> Owns a book/material and has full access to all the information from it, while keeping anonymous access to anything they don’t own.</li>
-<li><strong>Moderator</strong> A role meant for users that want to help maintain the information in the system, they can propose edits to information, which is then be sent for approval by an Editor or Author.</li>
-<li><strong>Editor</strong> Access to all information regardless of purchase, role should only be used by people appointed to keep the information updated, such as editing rules, abilities, etc. based on eratas. This role would also have access to approve moderator edits.</li>
-<li><strong>Webmaster</strong> Similar access to Editor, but can also add new content.</li>
-<li><strong>Administrator</strong> Apart from having similar access as Webmaster and Editor, this role would also be able to delete content. As such, this role should only be used by trusted people.</li>
-<li><strong>Developer</strong> Has similar access as administrator, but also access to debugging information.</li>
-</ul>
+<dl>
+<dt>Anonymous:</dt>
+<dd>Access to summarized content in minimal form so they can still play the system without all books. This access is what a user has to all information they haven’t purchased.</dd>
+<dt>Owner:</dt>
+<dd>Owns a book/material and has full access to all the information from it, while keeping anonymous access to anything they don’t own.</dd>
+<dt>Moderator:</dt>
+<dd>A role meant for users that want to help maintain the information in the system, they can propose edits to information, which is then be sent for approval by an Editor or Author.</dd>
+<dt>Editor:</dt>
+<dd>Access to all information regardless of purchase, role should only be used by people appointed to keep the information updated, such as editing rules, abilities, etc. based on eratas. This role would also have access to approve moderator edits.</dd>
+<dt>Webmaster:</dt>
+<dd>Similar access to Editor, but can also add new content.</dd>
+<dt>Administrator:</dt>
+<dd>Apart from having similar access as Webmaster and Editor, this role would also be able to delete content. As such, this role should only be used by trusted people.</dd>
+<dt>Developer:</dt>
+<dd>Has similar access as administrator, but also access to debugging information.</dd>
+</dl>
 <p>Naturally all actions that affect content within the system (for example an editor approving an edit by a moderator, or an administrator deleting an ability) should be logged, so that should something happen that affects content, we can check the logs for what happened.</p>
 <p>All content should also be version controlled, that way if something gets edited or deleted, to restore it, you would only have to do a roll back to the previous version of what was edited or deleted to restore that version.</p>
+<p>It should be possible for a  <abbr title="Tabletop Role Playing Game">TRPG</abbr> system to define what level of information is publicly accessible (anonymous or without purchase), so that if a system wants to provide all of it’s information fully public, they should be able to do so.<br>
+Level of information should be in 3 tiers:</p>
+<ul>
+<li><strong>Private</strong><br>
+The information is only available to those who have purchased it’s source book/material or has a role that grants them access.</li>
+<li><strong>Summarized</strong><br>
+The information is available in summarized form to any who hasn’t purchased the book/material.</li>
+<li><strong>Public</strong><br>
+The information is fully available to everyone.</li>
+</ul>
+<h3 id="performance">Performance</h3>
+<p>It can add unnecessary delay if all data in any apps using the <abbr title="Application Programming Interface">API</abbr>, has to be retrieved whenever a request is made, for that reason it would be highly recommended to cache the <abbr title="Application Programming Interface">API</abbr> data in the APP itself.<br>
+This would allow Apps to only require a connection to the <abbr title="Application Programming Interface">API</abbr> periodically when it needs to refresh it’s data.<br>
+To aid in this, the <abbr title="Application Programming Interface">API</abbr> should have an endpoint that provides a list of all available endpoints along with the version they are running, the app would then only need to routinely check the version list endpoint, and then only refresh it’s data when it reports a higher version than the version the app uses.</p>
+<h4 id="example">Example:</h4>
+<p>The app integrates with the <abbr title="Application Programming Interface">API</abbr> to keep a list of all Attributes, Abilities and Mystical Powers, which it’s users can then browse and any placeholder in the data is replaced with links to more information about it (such as an ability mentioning an Attribute, clicking the attribute would show a description of it).<br>
+The app checks the <abbr title="Application Programming Interface">API</abbr> version endpoint daily.<br>
+Eventually the Mystical Powers endpoint is listed as having a higher version, which the app then requests the updated data from, reducing the need to call the endpoints for the other information the app uses as they had not been updated.</p>
+<h2 id="search--information-repository">Search / Information Repository</h2>
+<p>This service would serve as a searchable database for all the information stored in the <abbr title="Application Programming Interface">API</abbr>, imagine it being kind of like Google, where one could search within any of the information or filter/limit the search to only find specific types of information.</p>
+<p>Naturally it would not make much sense for it to search across the different <abbr title="Tabletop Role Playing Game">TRPG</abbr> systems, meaning that each system should have it’s own Information Repository. (Though they would virtually be identical, only limiting information to their respective systems).</p>
+<p>The service would also allow users to log in, granting them access to more detailed information for the books/materials they have purchased. Anonymous users would only be able to access summarized version of content so they can still play the game, similarly logged in users would have the same level of access for content they haven’t purchased.</p>
+<p>This service would also be a natural front-page of the collection of services, linking them together.</p>
 
     </div>
   </div>
