@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRPG Service System</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#trpg-service-system">TRPG Service System</a>
+<ul>
+<li><a href="#api-service">API Service</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="trpg-service-system"><abbr title="Tabletop Role Playing Game">TRPG</abbr> Service System</h1>
+<p>This document is mean to be an overview of the idea for the <abbr title="Tabletop Role Playing Game">TRPG</abbr> Service System aimed at <a href="https://frialigan.se/sv/startsida/">Fria Ligan</a> (<a href="https://frialigan.se/en/startpage/">Free League</a>) published <abbr title="Tabletop Role Playing Game">TRPG</abbr> systems, books and other materials.</p>
+<p>As I currently only own Symbaroum, all examples in this document is related to that system.</p>
+<h2 id="api-service"><abbr title="Application Programming Interface">API</abbr> Service</h2>
+<p>A restful <abbr title="Application Programming Interface">API</abbr> services that provides a simple way for developers and other apps to integrate information from the <abbr title="Tabletop Role Playing Game">TRPG</abbr> systems. This <abbr title="Application Programming Interface">API</abbr> service provides the “single source of truth” for all information used within the <abbr title="Tabletop Role Playing Game">TRPG</abbr> Service System.</p>
+<p>The service should expose various connection endpoints that can be used to retrieve specific information, along with accepting additional attributes for filtering and/or sorting the returned result.</p>
+<h3 id="examples">Examples:</h3>
+<p>These examples are only mockups, any final product will likely be different and more flexible. They are only intended to provide a better understanding of what the <abbr title="Application Programming Interface">API</abbr> Service actually provide.</p>
+<p><strong>Attributes</strong><br>
+This example lists all attributes, but not enriched, meaning it uses placeholders for information that belongs to another endpoint.<br>
+The reason why an option to have data not be enriched, is to allow for apps that integrate the information to “grab” those parts, enrich them themselves and maybe even make them link to more information (for example, make the placeholder for an attribute be replaced by the actual attribute title, and link to information about that attribute).</p>
+<dl>
+<dt>Example:</dt>
+<dd><em>Endpoint:</em>  <code>/symbaroum/attributes</code></dd>
+<dd><em>Attributes:</em>  <code>enriched=false</code></dd>
+<dd><em>Return:</em></dd>
+</dl>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"accurate"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"Accurate"</span><span class="token punctuation">,</span>
+		<span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"A character’s hand-eye coordination, precision and timing are all represented by %attribute:accurate.title%. This Attribute is for instance used to hit an intended target with punches, strikes, throws or a missile from a ranged weapon. %attribute:accurate.title% is in most cases opposed by an enemy’s %attribute:quick.title%."</span><span class="token punctuation">,</span>
+		<span class="token string">"summary"</span><span class="token punctuation">:</span> <span class="token string">"Hand-eye coordination, hit antagonist with bow/sword/axe"</span><span class="token punctuation">,</span>
+		<span class="token string">"calculated"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+		<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"primary"</span><span class="token punctuation">,</span>
+		<span class="token string">"source"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"book"</span><span class="token punctuation">:</span> <span class="token string">"%book:crb.title%"</span><span class="token punctuation">,</span>
+			<span class="token string">"page"</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+			<span class="token string">"chapter"</span><span class="token punctuation">:</span> <span class="token string">"Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"section"</span><span class="token punctuation">:</span> <span class="token string">"The Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"paragraph"</span><span class="token punctuation">:</span> <span class="token string">"Accurate"</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"cunning"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"Cunning"</span><span class="token punctuation">,</span>
+		<span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"The %attribute:cunning.title% Attribute represents a character’s wit and knowledge, its common sense as well as actual schooling and education. You usually test %attribute:cunning.title% when trying to remember facts, when solving a logical problem or puzzle, or when doing research in a library. %attribute:cunning% is usually tested against a specific level of Difficulty, decided by the Game Master."</span><span class="token punctuation">,</span>
+		<span class="token string">"summary"</span><span class="token punctuation">:</span> <span class="token string">"Recollect facts, make conclusions, do research"</span><span class="token punctuation">,</span>
+		<span class="token string">"calculated"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+		<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"primary"</span><span class="token punctuation">,</span>
+		<span class="token string">"source"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"book"</span><span class="token punctuation">:</span> <span class="token string">"%book:crb.title%"</span><span class="token punctuation">,</span>
+			<span class="token string">"page"</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+			<span class="token string">"chapter"</span><span class="token punctuation">:</span> <span class="token string">"Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"section"</span><span class="token punctuation">:</span> <span class="token string">"The Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"paragraph"</span><span class="token punctuation">:</span> <span class="token string">"Cunning"</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	
+	<span class="token operator">...</span>
+	
+	<span class="token string">"toughness"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"Toughness"</span><span class="token punctuation">,</span>
+		<span class="token string">"summary"</span><span class="token punctuation">:</span> <span class="token string">"%attribute:toughness.title% = %attribute:strong.title% (though never below 10)"</span><span class="token punctuation">,</span>
+		<span class="token string">"calculated"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+		<span class="token string">"formula"</span><span class="token punctuation">:</span> <span class="token string">"%attribute:strong.value% &gt;= 10 ? %attribute:strong.value% : 10"</span><span class="token punctuation">,</span>
+		<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"secondary"</span><span class="token punctuation">,</span>
+		<span class="token string">"source"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"book"</span><span class="token punctuation">:</span> <span class="token string">"%book:crb.title%"</span><span class="token punctuation">,</span>
+			<span class="token string">"page"</span><span class="token punctuation">:</span> <span class="token number">101</span><span class="token punctuation">,</span>
+			<span class="token string">"chapter"</span><span class="token punctuation">:</span> <span class="token string">"Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"section"</span><span class="token punctuation">:</span> <span class="token string">"The Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"paragraph"</span><span class="token punctuation">:</span> <span class="token string">"Secondary Attributes"</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"pain_threshold"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"Pain Threshold"</span><span class="token punctuation">,</span>
+		<span class="token string">"summary"</span><span class="token punctuation">:</span> <span class="token string">"%attribute:pain_threshold.title% = %attribute:strong.title%/2 (rounded up)"</span><span class="token punctuation">,</span>
+		<span class="token string">"calculated"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+		<span class="token string">"formula"</span><span class="token punctuation">:</span> <span class="token string">"ceil(%attribute:strong.value% / 2)"</span><span class="token punctuation">,</span>
+		<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"secondary"</span><span class="token punctuation">,</span>
+		<span class="token string">"source"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"book"</span><span class="token punctuation">:</span> <span class="token string">"%book:crb.title%"</span><span class="token punctuation">,</span>
+			<span class="token string">"page"</span><span class="token punctuation">:</span> <span class="token number">101</span><span class="token punctuation">,</span>
+			<span class="token string">"chapter"</span><span class="token punctuation">:</span> <span class="token string">"Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"section"</span><span class="token punctuation">:</span> <span class="token string">"The Attributes"</span><span class="token punctuation">,</span>
+			<span class="token string">"paragraph"</span><span class="token punctuation">:</span> <span class="token string">"Secondary Attributes"</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Mystical Power: Anathema</strong><br>
+This shows a request for information specific to the Anathema mystical power, but only to include the novice and adept levels, as well as enriching the data to make it more human readable (meaning all placeholders are replaced with the actual values).</p>
+<dl>
+<dt>Example:</dt>
+<dd><em>Endpoint:</em>  <code>/symbaroum/skills/anathema</code></dd>
+<dd><em>Attributes:</em>  <code>level=[novice,adept],enriched=true</code></dd>
+<dd><em>Return:</em></dd>
+</dl>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"Anathema"</span><span class="token punctuation">,</span>
+	<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"mystical_power"</span><span class="token punctuation">,</span>
+	<span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"The mystic has studied the secrets of countering magic and can dispel the effects of other powers.\n Anathema does not affect rituals – their mystical bonds are too thoroughly woven and can only be dispelled by other rituals."</span><span class="token punctuation">,</span>
+	<span class="token string">"levels"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"novice"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"level"</span><span class="token punctuation">:</span> <span class="token string">"Novice"</span><span class="token punctuation">,</span>
+			<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"active"</span><span class="token punctuation">,</span>
+			<span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"By making a successful roll against [Resolute&lt;-Resolute] the mystic can disperse a power’s ongoing effects on a creature, or on himself provided that the mystic is fit to wield magic. The Resolute of the mystic who has unleashed the power is used as resistance when making the test."</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token string">"adept"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"level"</span><span class="token punctuation">:</span> <span class="token string">"Adept"</span><span class="token punctuation">,</span>
+			<span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"active"</span><span class="token punctuation">,</span>
+			<span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"The mystic can disperse ongoing effects on a Chain of creatures; tests are made for one target at a time, until one test fails"</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Access to the <abbr title="Application Programming Interface">API</abbr> Service should be limited based on account role to prevent anyone from accessing all the information without having purchased any of them.</p>
+<p>This would require an account system that has a list of all the books/materials the user has purchased, granting them access to each individual information based on said list.</p>
+<p>However, for a lot of players they might not want to purchase all the books if they are just players and their GM usually has all the required books. For that reason, anonymous users should still have access to all information, but in a summarised version that is usable, but doesn’t provide the usual lore, flavor and similar texts.</p>
+<p>A quick mock-up of access roles would be:</p>
+<ul>
+<li><strong>Anonymous:</strong> Access to summarized content in minimal form so they can still play the system without all books. This access is what a user has to all information they haven’t purchased.</li>
+<li><strong>Owner</strong> Owns a book/material and has full access to all the information from it, while keeping anonymous access to anything they don’t own.</li>
+<li><strong>Moderator</strong> A role meant for users that want to help maintain the information in the system, they can propose edits to information, which is then be sent for approval by an Editor or Author.</li>
+<li><strong>Editor</strong> Access to all information regardless of purchase, role should only be used by people appointed to keep the information updated, such as editing rules, abilities, etc. based on eratas. This role would also have access to approve moderator edits.</li>
+<li><strong>Webmaster</strong> Similar access to Editor, but can also add new content.</li>
+<li><strong>Administrator</strong> Apart from having similar access as Webmaster and Editor, this role would also be able to delete content. As such, this role should only be used by trusted people.</li>
+<li><strong>Developer</strong> Has similar access as administrator, but also access to debugging information.</li>
+</ul>
+<p>Naturally all actions that affect content within the system (for example an editor approving an edit by a moderator, or an administrator deleting an ability) should be logged, so that should something happen that affects content, we can check the logs for what happened.</p>
+<p>All content should also be version controlled, that way if something gets edited or deleted, to restore it, you would only have to do a roll back to the previous version of what was edited or deleted to restore that version.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
